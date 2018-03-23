@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bootstrap.css" type="text/css">
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+   <hello></hello>
+    <hello1></hello1>
+    <table>
+        <tr is="my-row"><td>a1111111111</td><td>b111111111</td></tr>
+        <tr is="my-row"><td>a222222222</td><td>b222222232</td></tr>
+    </table>
+    <simple-counter></simple-counter>
+    <simple-counter></simple-counter>
+    <div>
+        <input type="text" v-model="message">
+        <mymessage :message="message"></mymessage>
+    </div>
+    <mylist :listdata="arraydatas" @remove="removedata1" @add="adddata1"></mylist>
+    <my-checkbox v-model="c" value="123"></my-checkbox>
+</div>
+<script type="text/x-template" id="hello-world-template">
+    <div>
+        <p>Hello hello hello</p>
+    </div>
+</script>
+<script>
+    //自定义一个最简单的组件
+    Vue.component('hello',{
+        template:'#hello-world-template'
+    });
+    Vue.component('hello1',{
+        template:'<h1>hello</h1>'
+    });
+    Vue.component('my-row',{
+        template:`<tr><i class="glyphicon glyphicon-triangle-right"></i><slot></slot></tr>`
+    });
+    Vue.component('simple-counter', {
+        template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+        // 技术上 data 的确是一个函数了，因此 Vue 不会警告，
+        // 但是我们却给每个组件实例返回了同一个对象的引用
+        data: function () {
+            return {
+                counter:0
+            }
+        }
+    });
+    //父子组件的通讯，props:父组件传递给子组件数据，子组件像父组件报告事件，这样保持独立，降低耦合
+    Vue.component('mymessage',{
+        props:["message"],
+        template:`<span>{{ message }}</span>`
+    });
+    Vue.component('mylist',{
+        props:['listdata'],
+        template:`<div><input type="text" v-model="val" @keyup.enter="add"><ol><li v-for="(item,index) in listdata">{{item}} <button @click="remove(index)">X</button></li></ol></div>`,
+        methods:{
+            remove:function(index){
+                console.log(111);
+                this.$emit('remove',index);
+            },
+            add:function(){
+                this.$emit('add',this.val);
+                this.val='';
+            }
+        },
+        data:function(){
+            return{
+                val:''
+            }
+        }
+    });
+
+    Vue.component('my-checkbox', {
+        model: {
+            prop: 'checked',
+            event: 'change'
+        },
+        props: {
+            checked: Boolean,
+            // 这样就允许拿 `value` 这个 prop 做其它事了
+            value: String
+        },
+        template:`<input type="checkbox" v-model="checked">`
+    });
+    var bus = new Vue();
+    bus.$on('id-selected', function (id) {
+        console.log("id-selected"+id);
+    });
+    // 触发组件 A 中的事件
+    bus.$emit('id-selected', 1);
+    // 在组件 B 创建的钩子中监听事件
+
+
+
+    var app = new Vue({
+     el:'#app',
+        data:{
+         c:true,
+            message:'111',
+         arraydatas:['你好','我好','大家好']
+        },
+        methods:{
+           removedata1:function(index){
+               this.arraydatas.splice(index,1);
+           },
+            adddata1:function(val){
+                this.arraydatas.push(val);
+            }
+        }
+    });
+</script>
+</body>
+</html>

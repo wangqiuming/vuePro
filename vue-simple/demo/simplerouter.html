@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+</div>
+
+<script>
+    const NotFound = {template: '<p>Page not found</p>'}
+    const Home = {template: '<p>home page</p>'}
+    const About = {template: '<p>about page</p>'}
+    const routers = {
+        '/': Home,
+        'about': About
+    };
+    var app =  new Vue({
+        el: '#app',
+        data: {
+            currentPath: window.location.pathname
+        },
+        computed: {
+            ViewComponent: function () {
+                console.log(this.currentPath);
+                return routers[this.currentPath] || NotFound
+            }
+        },
+        render: function (h) {
+            return h(this.ViewComponent)
+        }
+    });
+</script>
+
+</body>
+</html>

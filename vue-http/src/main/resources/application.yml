@@ -1,0 +1,22 @@
+# config context path to "/" by setting an empty string
+server:
+  contextPath: /api
+
+# JACKSON
+spring:
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      INDENT_OUTPUT: true
+
+
+
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+
+#logging:
+#  level:
+#    org.springframework:
+#      security: DEBUG

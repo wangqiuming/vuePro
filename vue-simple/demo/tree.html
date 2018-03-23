@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <link rel="stylesheet" href="./zTreeStyle/zTreeStyle.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <ul class="ztree">
+        <treeitem   v-for="(item,index) in zNodes"  :item-data="item" :index="index" :length="zNodes.length" @click-item="clickItem" :level="0"></treeitem>
+    </ul>
+
+
+</div>
+
+
+<script type="text/x-template" id="treeItemTemplate">
+    <li>
+        <span id="treeDemo_1_switch" class="button switch " :class="getClassSwitch()" @click.stop="switchOpen"></span>
+        <a id="treeDemo_1_a" target="_blank" @click.stop="clickItem">
+            <span id="treeDemo_1_ico" class="button " :class="getClassIco()"></span>
+            <span id="treeDemo_1_span" class="node_name">{{itemData.name}}</span>
+        </a>
+        <ul id="treeDemo_1_ul" :class="{line:hasLine()}"  v-show="itemData.open" v-if="hasChildren()">
+            <treeitem   v-for="(item,index) in itemData.children"  :item-data="item" :index="index" :length="itemData.children.length" :level="mylevel"></treeitem>
+        </ul>
+    </li>
+</script>
+
+<script>
+
+
+    Vue.component('treeitem',{
+       template:'#treeItemTemplate',
+        props:["itemData","index","length","level"],
+        data:function(){
+           return {
+               mylevel:this.level+1
+           }
+        },
+      methods:{
+            getRoot(){
+                var root = this;
+                for(var i=1;i<this.mylevel;i++){
+                    root = root.$parent
+                }
+                console.log(root);
+                return root;
+            },
+          clickItem:function(){
+              console.log(JSON.stringify(this.itemData)+"this.index:"+this.index+"this.level:"+this.mylevel);
+
+              this.getRoot().$emit("click-item",this.itemData,this.index,this.length);
+          },
+           switchOpen:function(){
+               if(this.itemData.open){
+                   this.itemData.open=false;
+               }else{
+                   this.itemData.open=true;
+               }
+           },
+           hasLine:function(){
+               return this.index!==this.length-1
+           },
+          getClassIco:function(){
+              var ico_open=false;
+              var ico_close=false;
+              var ico_docu=false;
+              if(!this.hasChildren()){
+                  ico_docu=true;
+              }else{
+                  if(this.itemData.open){
+                      ico_open=true;
+                  }else{
+                      ico_close=true;
+                  }
+              }
+
+              return {
+                  "ico_open":ico_open,
+                  "ico_close":ico_close,
+                  "ico_docu":ico_docu
+              }
+          },
+          getClassSwitch:function(){
+              console.log(this.itemData+":"+this.index+":"+this.length);
+              var roots_open=false;
+              var center_open=false;
+              var bottom_open=false;
+              var roots_close=false;
+              var center_close=false;
+              var bottom_close=false;
+              var center_docu=false;
+              var bottom_docu=false;
+              if(!this.hasChildren()){
+                  if(this.index==this.length-1){
+                      bottom_docu =true;
+                  }else{
+                      center_docu=true;
+                  }
+              }else{
+                  if(this.itemData.open){
+                      if(this.index==0){
+                          roots_open=true;
+                      }else if(this.index==this.length-1){
+                          bottom_open =true;
+                      }else{
+                          center_open=true;
+                      }
+                  }else{
+                      if(this.index==0){
+                          roots_close=true;
+                      }else if(this.index==this.length-1){
+                          center_close =true;
+                      }else{
+                          bottom_close=true;
+                      }
+                  }
+              }
+
+              return{
+                  "roots_open":roots_open,
+                  "center_open":center_open,
+                  "bottom_open":bottom_open,
+                  "roots_close":roots_close,
+                  "center_close":center_close,
+                  "bottom_close":bottom_close,
+                  "center_docu":center_docu,
+                  "bottom_docu":bottom_docu
+              };
+          },
+          hasChildren:function(){
+              console.log(this.itemData+":"+this.index+":"+this.length);
+              if(this.itemData.children){
+                  return this.itemData.children.length>0;
+              }
+              return false;
+          }
+      }
+
+    });
+
+    var zNodes = [
+        {
+            name: "test1", open: true, children: [
+            {name: "test1_1"}, {name: "test1_2"}]
+        },
+        {
+            name: "test2", open: true, children: [
+            {name: "test2_1"}, {name: "test2_2",open:false, children: [{name:"test2_2_1"},{name:"test2_2_2"}]}]
+        },
+        {
+            name: "test3"
+        }
+    ];
+    var app = new Vue({
+        el:'#app',
+        data:{
+            zNodes:zNodes
+        },
+        methods:{
+            clickItem:function(itemData,index,length){
+                console.log("parent:"+JSON.stringify(itemData)+"index:"+index+"length:"+length);
+            }
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

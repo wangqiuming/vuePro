@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+   <hello>
+       <h1 slot="header">我是到头那儿去</h1>
+       <h1>我跑到那了你自己看</h1>
+       <h1 slot="footer">我可能要垫底了</h1>
+   </hello>
+</div>
+<script type="text/x-template" id="hello-world-template">
+    <div>
+        <slot name="header"></slot>
+        <p>Hello hello hello</p>
+        <slot></slot>
+        <slot name="footer"></slot>
+    </div>
+</script>
+<script>
+    //自定义一个最简单的组件
+    Vue.component('hello',{
+        template:'#hello-world-template'
+    });
+    var app = new Vue({
+     el:'#app',
+
+    });
+</script>
+</body>
+</html>

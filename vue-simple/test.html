@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .a{
+            height:100px;
+            width:100px;
+            background: orange;
+            border: 1px solid #0f0f0f;
+        }
+        .b{
+            position:fixed;
+            left:300px;
+            top:300px;
+        }
+        .c{
+            margin:10px;
+        }
+    </style>
+</head>
+<body>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a"></div>
+<div class="a" id="me">
+
+</div>
+<div class="b a" id ="b">
+    <div class="c" id="c">1111111</div>
+</div>
+<script>
+var me = document.getElementById("c");
+var clientRect = me.getBoundingClientRect();
+console.log(clientRect.top+":"+clientRect.left+":"+clientRect.bottom+":"+clientRect.right+":"+clientRect.height+":"+clientRect.width);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>methods vs computed</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="one">
+    <input type="text" v-model="two">
+    <input type="text" v-model="other">
+    <p>计算后反转字符串1: {{ reOne }}</p>
+    <p>计算后反转字符串2: {{ reTwo() }}</p>
+    <p>字符串other: {{ other }}</p>
+</div>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            one: 'one',
+            two:"two",
+            other:"other"
+        },
+        computed: {
+            // 计算属性的 getter
+            reOne: function () {
+                alert("1");
+                // `this` 指向 vm 实例
+                return this.one.split('').reverse().join('')
+            }
+        },
+        methods:{
+            reTwo:function(){
+                alert(2);
+                return this.two.split('').reverse().join('');
+            }
+        }
+    })
+</script>
+
+
+</body>
+</html>

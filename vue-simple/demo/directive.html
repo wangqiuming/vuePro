@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" />
+    <input type="text" v-focus/>
+
+    <div v-demo:foo.a.b="hello"></div>
+
+</div>
+
+<script>
+    Vue.directive('focus',{
+        inserted: function(el){
+            el.focus();
+        }
+    });
+    Vue.directive('demo', {
+        bind: function (el, binding, vnode) {
+            var s = JSON.stringify
+            el.innerHTML =
+                'name: '       + s(binding.name) + '<br>' +
+                'value: '      + s(binding.value) + '<br>' +
+                'expression: ' + s(binding.expression) + '<br>' +
+                'argument: '   + s(binding.arg) + '<br>' +
+                'modifiers: '  + s(binding.modifiers) + '<br>' +
+                'vnode keys: ' + Object.keys(vnode).join(', ')
+        }
+    })
+    var app = new Vue({
+        el: '#app',
+        data:{
+            hello:'hello world'
+        }
+
+    })
+</script>
+</body>
+</html>

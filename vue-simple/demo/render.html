@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <heading :level="1">
+        <div slot="hello">2222</div>
+        <div>1111</div>
+    </heading>
+</div>
+
+<script>
+    Vue.component('heading',{
+        props:{
+            level:{
+               type:'Number',
+               required:true
+            }
+        },
+      render:function(c){
+          c('h'+this.level,[this.$slots.default,this.$slots.hello]);
+
+      }
+
+    });
+    var watchExampleVM = new Vue({
+        el: '#app'
+
+
+    })
+</script>
+</body>
+</html>
